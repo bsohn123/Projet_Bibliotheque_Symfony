@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes emprunts{% endblock %}
+
+{% block body %}
+<h1>Mes emprunts</h1>
+
+<ul>
+    {% for loan in loans %}
+        <li>
+            {{ loan.book.title }}
+            — emprunté le {{ loan.borrowedAt|date('d/m/Y H:i') }}
+
+            <form method="post"
+                  action="{{ path('loan_return', {id: loan.id}) }}"
+                  style="display:inline">
+                <button type="submit">Rendre</button>
+            </form>
+        </li>
+    {% else %}
+        <li>Aucun emprunt en cours.</li>
+    {% endfor %}
+</ul>
+
+<a href="{{ path('app_book_index') }}">← Retour aux livres</a>
+{% endblock %}

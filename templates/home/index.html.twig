@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+<h1>📚 Bibliothèque</h1>
+
+<p>Bienvenue sur la bibliothèque.</p>
+
+<a href="{{ path('app_book_index') }}">Voir les livres</a>
+<a href="{{ path('app_category_index') }}">Voir les catégories</a>
+
+{% if app.user %}
+  <a href="{{ path('my_loans') }}">Mes emprunts</a>
+{% else %}
+  <a href="{{ path('app_login') }}">Se connecter</a>
+{% endif %}
+{% endblock %}

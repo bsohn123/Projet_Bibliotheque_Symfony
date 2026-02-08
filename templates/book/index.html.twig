@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Livres{% endblock %}
+
+{% block body %}
+    <h1>Livres</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Titre</th>
+            <th>Auteur</th>
+            <th>Description</th>
+            <th>Créé le</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for book in books %}
+            <tr>
+                <td>{{ book.id }}</td>
+                <td>{{ book.title }}</td>
+                <td>{{ book.author }}</td>
+                <td>{{ book.description }}</td>
+                <td>{{ book.createdAt ? book.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+
+                <td>
+                    <a href="{{ path('app_book_show', {'id': book.id}) }}">show</a>
+
+                    {# Emprunter : seulement user connecté #}
+                    {% if app.user %}
+                        <form method="post"
+                              action="{{ path('loan_borrow', {'id': book.id}) }}"
+                              style="display:inline; margin-left: .5rem;">
+                            <button type="submit" class="btn btn-sm btn-primary">Emprunter</button>
+                        </form>
+                    {% else %}
+                        <a href="{{ path('app_login') }}" style="margin-left: .5rem;">Se connecter</a>
+                    {% endif %}
+
+                    {# Admin : edit uniquement #}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('app_book_edit', {'id': book.id}) }}" style="margin-left: .5rem;">edit</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">Aucun livre.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {# Admin : Create new une seule fois, en bas #}
+    {% if is_granted('ROLE_ADMIN') %}
+        <a class="btn btn-success" href="{{ path('app_book_new') }}">Create new</a>
+    {% endif %}
+{% endblock %}
