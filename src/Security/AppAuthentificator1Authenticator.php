@@ -47,9 +47,9 @@ class AppAuthentificator1Authenticator extends AbstractLoginFormAuthenticator
         return new RedirectResponse($targetPath);
     }
 
-    // admin -> dashboard du site
+    // admin -> dashboard EasyAdmin
     if (in_array('ROLE_ADMIN', $token->getRoleNames(), true)) {
-        return new RedirectResponse($this->urlGenerator->generate('app_home'));
+        return new RedirectResponse($this->urlGenerator->generate('admin'));
     }
 
     // user normal -> catalogue

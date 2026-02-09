@@ -3,59 +3,87 @@
 {% block title %}Livres{% endblock %}
 
 {% block body %}
-    <h1>Livres</h1>
+    <section class="card-elevated p-4 p-lg-5">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+            <div>
+                <span class="tag">Catalogue</span>
+                <h1 class="mt-3 mb-1">Livres</h1>
+                <p class="text-muted mb-0">Parcourez les titres disponibles et empruntez en un clic.</p>
+            </div>
 
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Titre</th>
-            <th>Auteur</th>
-            <th>Description</th>
-            <th>Créé le</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
+            {% if is_granted('ROLE_ADMIN') %}
+                <a class="btn btn-accent" href="{{ path('app_book_new') }}">Ajouter un livre</a>
+            {% endif %}
+        </div>
 
-        <tbody>
-        {% for book in books %}
-            <tr>
-                <td>{{ book.id }}</td>
-                <td>{{ book.title }}</td>
-                <td>{{ book.author }}</td>
-                <td>{{ book.description }}</td>
-                <td>{{ book.createdAt ? book.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+        <div class="table-responsive mt-4">
+            <table class="table align-middle">
+                <thead class="table-light">
+                <tr>
+                    <th class="d-none">Id</th>
+                    <th>Titre</th>
+                    <th>Auteur</th>
+                    <th>Description</th>
+                    <th class="d-none">Créé le</th>
+                    <th class="d-none">Actions</th>
+                </tr>
+                </thead>
 
-                <td>
-                    <a href="{{ path('app_book_show', {'id': book.id}) }}">show</a>
+                <tbody>
+                {% for book in books %}
+                    <tr>
+                        <td class="d-none">{{ book.id }}</td>
+                        <td class="fw-semibold">{{ book.title }}</td>
+                        <td>{{ book.author }}</td>
+                        <td class="text-muted">
+                            <div>{{ book.description }}</div>
+                            <div class="mt-3 d-flex flex-wrap gap-2">
+                                <a class="btn btn-sm btn-outline-ink" href="{{ path('app_book_show', {'id': book.id}) }}">Voir</a>
 
-                    {# Emprunter : seulement user connecté #}
-                    {% if app.user %}
-                        <form method="post"
-                              action="{{ path('loan_borrow', {'id': book.id}) }}"
-                              style="display:inline; margin-left: .5rem;">
-                            <button type="submit" class="btn btn-sm btn-primary">Emprunter</button>
-                        </form>
-                    {% else %}
-                        <a href="{{ path('app_login') }}" style="margin-left: .5rem;">Se connecter</a>
-                    {% endif %}
+                                {% if app.user %}
+                                    <form method="post"
+                                          action="{{ path('loan_borrow', {'id': book.id}) }}"
+                                          class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-accent">Emprunter</button>
+                                    </form>
+                                {% else %}
+                                    <a class="btn btn-sm btn-accent" href="{{ path('app_login') }}">Se connecter</a>
+                                {% endif %}
 
-                    {# Admin : edit uniquement #}
-                    {% if is_granted('ROLE_ADMIN') %}
-                        <a href="{{ path('app_book_edit', {'id': book.id}) }}" style="margin-left: .5rem;">edit</a>
-                    {% endif %}
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">Aucun livre.</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <a class="btn btn-sm btn-outline-ink" href="{{ path('app_book_edit', {'id': book.id}) }}">Modifier</a>
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td class="d-none">{{ book.createdAt ? book.createdAt|date('Y-m-d H:i:s') : '' }}</td>
 
-    {# Admin : Create new une seule fois, en bas #}
-    {% if is_granted('ROLE_ADMIN') %}
-        <a class="btn btn-success" href="{{ path('app_book_new') }}">Create new</a>
-    {% endif %}
+                        <td class="d-none">
+                            <a href="{{ path('app_book_show', {'id': book.id}) }}">show</a>
+
+                            {# Emprunter : seulement user connecté #}
+                            {% if app.user %}
+                                <form method="post"
+                                      action="{{ path('loan_borrow', {'id': book.id}) }}"
+                                      style="display:inline; margin-left: .5rem;">
+                                    <button type="submit" class="btn btn-sm btn-primary">Emprunter</button>
+                                </form>
+                            {% else %}
+                                <a href="{{ path('app_login') }}" style="margin-left: .5rem;">Se connecter</a>
+                            {% endif %}
+
+                            {# Admin : edit uniquement #}
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a href="{{ path('app_book_edit', {'id': book.id}) }}" style="margin-left: .5rem;">edit</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6">Aucun livre.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
 {% endblock %}

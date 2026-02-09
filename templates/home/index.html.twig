@@ -1,18 +1,72 @@
-{% extends 'base.html.twig' %}
+﻿{% extends 'base.html.twig' %}
 
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
-<h1>📚 Bibliothèque</h1>
+<section class="row align-items-center g-5">
+    <div class="col-lg-6">
+        <span class="tag reveal">Espace lecture & emprunts</span>
+        <h1 class="display-4 fw-bold mt-3 reveal delay-1">La bibliothèque qui rend vos lectures simples.</h1>
+        <p class="lead text-muted mt-3 reveal delay-2">
+            Explorez nos collections, gérez vos emprunts et suivez vos découvertes sans effort.
+        </p>
+        <div class="d-flex flex-wrap gap-3 mt-4 reveal delay-3">
+            <a class="btn btn-accent" href="{{ path('app_book_index') }}">Découvrir les livres</a>
+            <a class="btn btn-outline-ink" href="{{ path('app_category_index') }}">Explorer les catégories</a>
+        </div>
+        <div class="row mt-5 g-4">
+            <div class="col-6">
+                <div class="stat">
+                    <div class="text-uppercase text-muted small">Catalogue vivant</div>
+                    <div class="h4 fw-bold mb-0">Nouveaux titres chaque semaine</div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="stat">
+                    <div class="text-uppercase text-muted small">Suivi clair</div>
+                    <div class="h4 fw-bold mb-0">Emprunts en un clic</div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<p>Bienvenue sur la bibliothèque.</p>
+    <div class="col-lg-6">
+        <div class="card-elevated p-4 reveal delay-2">
+            <h2 class="h4 fw-bold mb-3">Votre espace personnel</h2>
+            <p class="text-muted">
+                Centralisez vos lectures, retrouvez vos emprunts en cours et gardez une vue d'ensemble sur vos envies.
+            </p>
+            <div class="row g-3">
+                <div class="col-6">
+                    <div class="p-3 border rounded-4 h-100">
+                        <div class="fw-semibold">Mes emprunts</div>
+                        <div class="text-muted small">Historique, délais, retours.</div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="p-3 border rounded-4 h-100">
+                        <div class="fw-semibold">Listes de lecture</div>
+                        <div class="text-muted small">Sauvegardez vos découvertes.</div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="p-3 border rounded-4 h-100">
+                        <div class="fw-semibold">Catalogue intelligent</div>
+                        <div class="text-muted small">Trouvez le bon livre, au bon moment.</div>
+                    </div>
+                </div>
+            </div>
 
-<a href="{{ path('app_book_index') }}">Voir les livres</a>
-<a href="{{ path('app_category_index') }}">Voir les catégories</a>
-
-{% if app.user %}
-  <a href="{{ path('my_loans') }}">Mes emprunts</a>
-{% else %}
-  <a href="{{ path('app_login') }}">Se connecter</a>
-{% endif %}
+            {% if app.user %}
+                <div class="mt-4">
+                    <a class="btn btn-accent w-100" href="{{ path('my_loans') }}">Voir mes emprunts</a>
+                </div>
+            {% else %}
+                <div class="mt-4">
+                    <a class="btn btn-accent w-100" href="{{ path('app_login') }}">Se connecter</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
 {% endblock %}
